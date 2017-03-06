@@ -1,0 +1,10 @@
+{
+  "name": "imperial_assault_tracker",
+  "version": "1.0.0",
+  "description": "Imperial Assault Campaign Tracker.  Tracks deck building, mission progress and imperial and hero inventories.",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.1"
+  }
+}
