@@ -1,12 +1,6 @@
-
-
 <html>
 <head>
-  <title>Imperial Assault Stat Tracker</title>
-</head>
-
-<body>
-
+  <title>Imperial Assault Campaign Tracker</title>
   <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -19,9 +13,11 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
 
+<body>
   <div class="container text-center">
-    <h1 id="campaignName">Capaign</h1>
+    <h1 id="campaignName">Campaign</h1>
     <h5 id="campaignType">Campaign Type</h5>
   </div>
 
@@ -48,28 +44,21 @@
   </div>
 
   <script>
-    $("#campaignName").on("click", function() {
-      $(this).fadeOut('slow');
-    });
-
-    $.getJSON("/api/data", function(data) {
-      $("#campaignName").text(data.name);
-      $("#campaignType").text(data.campaign_type);
+    $.getJSON('/api/data', function(data) {
+      $('#campaignName').text(data.name);
+      $('#campaignType').text(data.campaign_type);
 
       for (var index in data.completed_missions) {
-        $("#missionList").append("<div class=completedMission>" + data.completed_missions[index] + "</div>");
+        $('#missionList').append('<div class="completedMission">' + data.completed_missions[index] + '</div>');
       };
 
-      $("#imperialPlayer").text(data.imperial_player.name);
+      $('#imperialPlayer').text(data.imperial_player.name);
 
       for (var index in data.rebel_players) {
-        $("#rebelPlayersList").append("<div class=rebelPlayers>" + data.rebel_players[index].name + "</div>");
-        $("#rebelHeroList").append("<div class=rebelHeroes>" + data.rebel_players[index].hero + "</div>");
+        $("#rebelPlayersList").append('<div class="rebelPlayers">' + data.rebel_players[index].name + '</div>');
+        $('#rebelHeroList').append('<div class="rebelHeroes">' + data.rebel_players[index].hero + '</div>');
       };
-
     });
-
   </script>
-
 </body>
 </html>
