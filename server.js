@@ -48,6 +48,21 @@ app.get('/api/data', function (req, res) {
       ],
     },
     ],
+    missionLog: [
+    {
+      type: 'begin',
+    },
+    {
+      type: 'complete_mission',
+      mission: 'hoth_intro',
+      winningSide: 'rebel',
+    },
+    {
+      type: 'complete_mission',
+      mission: 'side_mission_1',
+      winningSide: 'imperial',
+    },
+    ],
   };
   res.send(data);
 });
