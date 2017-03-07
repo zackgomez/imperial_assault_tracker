@@ -48,15 +48,17 @@
       $('#campaignName').text(data.name);
       $('#campaignType').text(data.campaign_type);
 
-      for (var index in data.completed_missions) {
-        $('#missionList').append('<div class="completedMission">' + data.completed_missions[index] + '</div>');
+      for (var index in data.completedMissions) {
+        var mission = data.completedMissions[index];
+        $('#missionList').append('<div class="completedMission">' + mission + '</div>');
       };
 
-      $('#imperialPlayer').text(data.imperial_player.name);
+      $('#imperialPlayer').text(data.imperialPlayer.name);
 
-      for (var index in data.rebel_players) {
-        $("#rebelPlayersList").append('<div class="rebelPlayers">' + data.rebel_players[index].name + '</div>');
-        $('#rebelHeroList').append('<div class="rebelHeroes">' + data.rebel_players[index].hero + '</div>');
+      for (var index in data.rebelPlayers) {
+        var rebel = data.rebelPlayers[index];
+        $("#rebelPlayersList").append('<div class="rebelPlayers">' + rebel.name + '</div>');
+        $('#rebelHeroList').append('<div class="rebelHeroes">' + rebel.hero + '</div>');
       };
     });
   </script>
