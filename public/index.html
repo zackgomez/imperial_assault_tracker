@@ -85,9 +85,6 @@
       imperialPlayer.append(currentXP);
       imperialPlayer.append(influence);
       imperialPlayer.append(upgrades);
-
-
-
       $('#imperialPlayer').append(imperialPlayer);
 
       // Add info for each rebel player
@@ -118,16 +115,12 @@
         rebel.append(xp);
         rebel.append(upgrades);
         rebel.append(equipment);
-
         $('#rebelPlayers').append(rebel);
       };
-
       $('#dataDiv').text(JSON.stringify(data));
-
     });
 
     function createListObject(list, classString, listName) {
-      
       var listContainer = $("<div/>").attr({
       }).text(listName);
 
@@ -143,10 +136,8 @@
       };
 
       listContainer.append(listObject)
-
       return listContainer
     };
-
   </script>
 </body>
 </html>
