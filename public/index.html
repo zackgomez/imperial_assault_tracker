@@ -23,17 +23,13 @@
 
   <div class="container text-center">
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-4" style="border:1px">
         <h3>Imperial Player</h3>
-        <div id="imperialPlayer"></div>
+        <div id="imperialPlayer" class="row"></div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-8">
         <h3>Rebel Players</h3>
-        <div id="rebelPlayersList"></div>
-      </div>
-      <div class="col-sm-4">
-        <h3>Rebel Heroes</h3>
-        <div id="rebelHeroList"></div>
+        <div id="rebelPlayers" class="row"></div>
       </div>
     </div>
   </div>
@@ -43,24 +39,114 @@
     <div id="missionList"></div>
   </div>
 
+  <div id="dataDiv">test</div>
+
   <script>
     $.getJSON('/api/data', function(data) {
       $('#campaignName').text(data.name);
-      $('#campaignType').text(data.campaign_type);
+      $('#campaignType').text(data.campaignType);
 
       for (var index in data.completedMissions) {
         var mission = data.completedMissions[index];
         $('#missionList').append('<div class="completedMission">' + mission + '</div>');
       };
 
-      $('#imperialPlayer').text(data.imperialPlayer.name);
+      // Add infor for Imperial player
+      var imperialPlayer = $("<div/>").attr({
+        class:"well text-left",
+      });
 
+      // Create sub divs for each attribute
+      var imperialPlayerName = $("<h4/>").attr({
+        class:"playerName text-center"
+      }).text(data.imperialPlayer.name);
+
+      var classDeck = $("<div/>").attr({
+        class:"classDeck",
+      }).text("Class Deck: " + data.imperialPlayer.classDeck);
+
+      var totalXP = $("<div/>").attr({
+        class:"playerXP",
+      }).text("Total XP: " + data.imperialPlayer.totalXP);
+
+      var currentXP = $("<div/>").attr({
+        class:"playerXP",
+      }).text("Current XP: " + data.imperialPlayer.currentXP);
+
+      var influence = $("<div/>").attr({
+        class:"influence",
+      }).text("Influence: " + data.imperialPlayer.influence);
+
+      var upgrades = createListObject(data.imperialPlayer.upgrades, "upgrades", "Upgrades: ");
+
+      imperialPlayer.append(imperialPlayerName);
+      imperialPlayer.append(classDeck);
+      imperialPlayer.append(totalXP);
+      imperialPlayer.append(currentXP);
+      imperialPlayer.append(influence);
+      imperialPlayer.append(upgrades);
+
+
+
+      $('#imperialPlayer').append(imperialPlayer);
+
+      // Add info for each rebel player
       for (var index in data.rebelPlayers) {
-        var rebel = data.rebelPlayers[index];
-        $("#rebelPlayersList").append('<div class="rebelPlayers">' + rebel.name + '</div>');
-        $('#rebelHeroList').append('<div class="rebelHeroes">' + rebel.hero + '</div>');
+        // Create div for each player and sub divs for each attribute
+        var rebel = $("<div/>").attr({
+          class:"well col-sm-6 text-left",
+        });
+
+        // Create a div for each player attribute
+        var name = $("<h4/>").attr({
+          class:"playerName text-center"
+        }).text(data.rebelPlayers[index].name);
+
+        var hero = $("<div/>").attr({
+          class:"hero",
+        }).text("Hero: " + data.rebelPlayers[index].hero);
+
+        var xp = $("<div/>").attr({
+          class:"playerXP",
+        }).text("XP: " + data.rebelPlayers[index].currentXP);
+
+        var upgrades = createListObject(data.rebelPlayers[index].upgrades, "upgrades text-left", "Upgrades: ");
+        var equipment = createListObject(data.rebelPlayers[index].equipment, "equipment", "Equipment: ");
+
+        rebel.append(name);
+        rebel.append(hero);
+        rebel.append(xp);
+        rebel.append(upgrades);
+        rebel.append(equipment);
+
+        $('#rebelPlayers').append(rebel);
       };
+
+      $('#dataDiv').text(JSON.stringify(data));
+
     });
+
+    function createListObject(list, classString, listName) {
+      
+      var listContainer = $("<div/>").attr({
+      }).text(listName);
+
+      var listObject = $("<ul/>").attr({
+        class:classString,
+      });
+
+      for (var i in list) {
+        item = $("<li/>").attr({
+          class:"classString"
+        }).text(list[i]);
+        listObject.append(item);
+      };
+
+      listContainer.append(listObject)
+
+      return listContainer
+    };
+
   </script>
 </body>
 </html>
