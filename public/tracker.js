@@ -87,7 +87,7 @@ function createListObject(list, classString, listName, playerID) {
     class: 'btn btn-primary btn-sm'
   }).text('+ ' + listName);
 
-  if (listName == "Equipment") {
+  if (listName == 'Equipment') {
     addItemButton.click({id: playerID}, addItem);
   };
 
