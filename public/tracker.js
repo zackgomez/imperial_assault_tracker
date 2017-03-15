@@ -1,4 +1,4 @@
-$.getJSON('/api/data', function(data) {
+var updateView = function(data) { 
   $('#campaignName').text(data.name);
   $('#campaignType').text(data.campaignType);
 
@@ -39,6 +39,10 @@ $.getJSON('/api/data', function(data) {
   $('#imperialPlayer').html(imperialPlayer);
 
   // Add info for each rebel player
+  var rebelRow = $('<div/>').attr({
+    id: "rebelPlayers",
+    class: "row",
+  });
   for (var index in data.rebelPlayers) {
     var rebel = data.rebelPlayers[index];
     // Create div for each player and sub divs for each attribute
@@ -63,10 +67,11 @@ $.getJSON('/api/data', function(data) {
     var equipment = createListObject(rebel.equipment, 'equipment', 'Equipment', rebel.id);
 
     rebelContainer.append(name, hero, xp, upgrades, equipment);
-    $('#rebelPlayers').append(rebelContainer);
+    rebelRow.append(rebelContainer);
   };
+  $('#rebelPlayers').html(rebelRow);
   $('#dataDiv').text(JSON.stringify(data));
-});
+};
 
 function createListObject(list, classString, listName, playerID) {
   var listContainer = $('<div/>').attr({
@@ -106,6 +111,13 @@ function addItem(event) {
     url: '/api/rebel/' + event.data.id + '/add_item',
     type: 'POST',
     data: 'item=' + item,
-    success: function() {location.reload(forceGet=true);}
+    success: updateView,
   });
 };
+
+$.ajax({
+  cache: false,
+  dataType: 'json',
+  url: '/api/data',
+  success: updateView
+});
