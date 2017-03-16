@@ -1,5 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var uuid = require('uuid');
+
+
 var app = express();
 
 // parse application/x-www-form-urlencoded
@@ -74,6 +77,8 @@ var data = {
   ],
 };
 
+var gameByID = {};
+
 app.get('/api/data', function (req, res) {
   res.json(data);
 });
@@ -83,6 +88,66 @@ function find_rebel(playerID) {
     return player.id === playerID;
   });
 }
+
+app.get('/api/game/:gameID', function(req, res) {
+  var gameID = req.params.gameID;
+  var game = gameByID[gameID];
+  if (!game) {
+    res.status(404).end();
+    return;
+  }
+  res.json(game);
+});
+
+app.post('/api/create_game', function(req, res) {
+  var body = req.body;
+  var campaignName = body.campaignName;
+  var campaignType = body.campaignType;
+  var imperialName = body.imperialName;
+  var imperialClassDeck = body.imperialClassDeck;
+
+  var rebels = body.rebels;
+
+  if (!campaignName || !campaignType || !imperialName || !imperialClassDeck || !rebels) {
+    res.status(400).send('Missing params');
+    return;
+  }
+
+  var rebelPlayers = rebels.map(function(def, idx) {
+    return {
+      id: 'rebel'+idx,
+      name: def.name,
+      hero: def.hero,
+      currentXP: 0,
+      upgrades: [],
+      equipment: [],
+    };
+  });
+
+  var game = {
+    id: uuid(),
+    name: campaignName,
+    campaignType: campaignType,
+    completedMissions: [],
+    imperialPlayer: {
+      id: 'imp',
+      name: imperialName,
+      classDeck: imperialClassDeck,
+      totalXP: 0,
+      currentXP: 0,
+      influence: 0,
+      upgrades: [],
+    },
+    rebelTotalCredits: 0,
+    rebelCurrentCredits: 0,
+    rebelTotalXP: 0,
+    rebelPlayers: rebelPlayers,
+    missionLog: [],
+  };
+
+  gameByID[game.id] = game;
+  res.json(game);
+});
 
 app.post('/api/rebel/:playerID/add_item', function (req, res) {
   var playerID = req.params.playerID;
