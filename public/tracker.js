@@ -38,6 +38,22 @@ var updateView = function(data) {
   imperialPlayer.append(imperialPlayerName, classDeck, totalXP, currentXP, influence, upgrades);
   $('#imperialPlayer').html(imperialPlayer);
 
+  // Display stats for rebel team
+  var rebelTeam = $('<div/>').attr({
+    id: 'rebelTeamStats',
+    class: 'well text-left'
+  });
+
+  var rebelCurrentCredits = $('<div/>').attr({
+  }).text('Current credits: ' + data.rebelCurrentCredits);
+  var rebelTotalCredits = $('<div/>').attr({
+  }).text('Total credits: ' + data.rebelTotalCredits);
+  var rebelTotalXP = $('<div/>').attr({
+  }).text('Total XP: ' + data.rebelTotalXP);
+
+  rebelTeam.append(rebelCurrentCredits, rebelTotalCredits, rebelTotalXP);
+  $('#rebelTeamStats').replaceWith(rebelTeam);
+
   // Add info for each rebel player
   var rebelRow = $('<div/>').attr({
     id: "rebelPlayers",
@@ -69,8 +85,10 @@ var updateView = function(data) {
     rebelContainer.append(name, hero, xp, upgrades, equipment);
     rebelRow.append(rebelContainer);
   };
-  $('#rebelPlayers').html(rebelRow);
-  $('#dataDiv').text(JSON.stringify(data));
+  $('#rebelPlayers').replaceWith(rebelRow);
+
+  $(".playerName").addClass("bg-info");
+  console.log(data);
 };
 
 function createListObject(list, classString, listName, playerID) {

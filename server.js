@@ -56,6 +56,34 @@ var data = {
       'invisibility_cloak',
     ],
   },
+  {
+    id: '1236',
+    name: 'Erin',
+    hero: 'jyn',
+    currentXP: 2,
+    upgrades: [
+      'loku_1',
+      'loku_3',
+    ],
+    equipment: [
+      'sniper_rifle',
+      'invisibility_cloak',
+    ],
+  },
+  {
+    id: '1237',
+    name: 'Daniella',
+    hero: 'verena',
+    currentXP: 2,
+    upgrades: [
+      'loku_1',
+      'loku_3',
+    ],
+    equipment: [
+      'sniper_rifle',
+      'invisibility_cloak',
+    ],
+  },
   ],
   missionLog: [
   {
