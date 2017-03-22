@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <title>Create New Game</title>
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navButton1" aria-expanded="false">
+            <span class="sr-only">Toggle Navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Imperial Assault Tracker</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navButton1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Game<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/newGame.html">New Game</a></li>
+                  <li><a href="/">Game List</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <form action="" name="newGameForm">
+        <h1>Create a new game: </h1>
+        <div class="well">
+          <p>
+            Campaign Name:
+            <input type="text" name="campaignName"/>
+          </p>
+          <p>
+            Campaign Type:
+            <input type="text" name="campaignType"/>
+          </p>
+        </div>
+        <div id="imperialSide" class="well">
+          <h3>Imperial Side</h3>
+          <p>
+            Imperial player name:
+            <input type="text" name="imperialName"/>
+          </p>
+          <p>
+            Imperial class deck:
+            <input type="text" name="imperialClassDeck">
+          </p>
+        </div>
+        <div id="rebelSide" class="well">
+          <h3>Rebel Side</h3>
+          <button id="addRebel" class="btn btn-primary btn-sm">Add Rebel</button>
+          <p>
+            Player Name
+            <input type="text" name="playerName"/>
+            Hero Name
+            <input type="text" name="heroName"/>
+          </p>
+        </div>
+        <button id="createGameButton" class="btn btn-default" type="submit">Create game</button>
+
+      </form>
+    </div>
+    <script>
+      $('#addRebel').click(function(e) {
+        e.preventDefault();
+        var newRebelPlayer = $('<p/>');
+        newRebelPlayer.append('Player Name: ');
+        var name = $('<input/>').attr({
+          type: 'text',
+          name: 'playerName'
+        })
+        newRebelPlayer.append(name);
+        newRebelPlayer.append('Hero Name: ');
+        var hero = $('<input/>').attr({
+          type: 'text',
+          name: 'heroName'
+        });
+        newRebelPlayer.append(hero);
+        var deletePlayerButton = $('<button/>').attr({
+          type: 'button',
+          class: 'icon-trash'
+        }).text('X');
+        deletePlayerButton.click(function(e){
+          e.preventDefault();
+          $(e.target).parent().remove();
+        })
+        newRebelPlayer.append(deletePlayerButton);
+        $('#rebelSide').append(newRebelPlayer);
+      });
+
+      $('#createGameButton').click(function(e) {
+        e.preventDefault();
+        var rebelList = $('#rebelSide').children('p').map(function(ind, val){
+          return {name: $(val).children()[0].value, hero: $(val).children()[1].value};
+        }).get();
+
+        var newGame = {
+          campaignName: newGameForm.campaignName.value, 
+          campaignType: newGameForm.campaignType.value, 
+          imperialName: newGameForm.imperialName.value, 
+          imperialClassDeck: newGameForm.imperialClassDeck.value, 
+          rebels: rebelList,
+        };
+
+        $.ajax({
+          url: '/api/create_game',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(newGame),
+          error: function() {
+            alert('Unable to create game. Please ensure all fields are filled in and try again.');
+          },
+          success: function(gameData) {
+            window.location = '/#' + gameData.id;
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
