@@ -143,8 +143,7 @@ $(document).ready(function(){
     gameID = url.substring(idLocation + 1);
   }
 
-  var gameURL = '';
-  gameURL = (gameID.length > 0) ? `/api/game/${gameID}` : '/api/data';
+  var gameURL = (gameID.length > 0) ? `/api/game/${gameID}` : '/api/data';
 
   $.ajax({
     cache: false,
