@@ -109,13 +109,29 @@
         e.preventDefault();
         var rebelList = $('#rebelSide').children('p').map(function(ind, val){
           return {'name': $(val).children()[0].value, 'hero': $(val).children()[1].value};
+        }).get();
+
+        var newGame = {
+          campaignName: newGameForm.campaignName.value, 
+          campaignType: newGameForm.campaignType.value, 
+          imperialName: newGameForm.imperialName.value, 
+          imperialClassDeck: newGameForm.imperialClassDeck.value, 
+          rebels: rebelList,
+        };
+
+        $.ajax({
+          url: '/api/create_game',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(newGame),
+          error: function() {
+            alert('Unable to create game. Please ensure all fields are filled in and try again.');
+          },
+          success: function(gameData) {
+            window.location = '/#' + gameData.id;
+          },
         });
-        console.log(rebelList);
-        var newGame = {'campaignName': newGameForm.campaignName.value, 'campaignType': newGameForm.campaignType.value, 'imperialName': newGameForm.imperialName.value, 'imperialClassDeck': newGameForm.imperialClassDeck.value, 'rebels': rebelList};
-        console.log(newGame);
       });
-
     </script>
-
   </body>
 </html>

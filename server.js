@@ -129,6 +129,7 @@ app.get('/api/game/:gameID', function(req, res) {
 
 app.post('/api/create_game', function(req, res) {
   var body = req.body;
+  console.log(body);
   var campaignName = body.campaignName;
   var campaignType = body.campaignType;
   var imperialName = body.imperialName;

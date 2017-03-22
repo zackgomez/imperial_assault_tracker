@@ -91,6 +91,8 @@ var updateView = function(data) {
   console.log(data);
 };
 
+
+
 function createListObject(list, classString, listName, playerID) {
   var listContainer = $('<div/>').attr({
   }).text(listName + ': ');
@@ -133,9 +135,27 @@ function addItem(event) {
   });
 };
 
-$.ajax({
-  cache: false,
-  dataType: 'json',
-  url: '/api/data',
-  success: updateView
+$(document).ready(function(){
+  var url = window.location.href;
+  var idLocation = url.indexOf('#');
+  if (idLocation == -1) {
+      $.ajax({
+        cache: false,
+        dataType: 'json',
+        url: '/api/data',
+        success: updateView
+      });
+  }
+  else {
+    var gameID = url.substring(idLocation + 1);
+    $.ajax({
+      cache: false,
+      dataType: 'json',
+      url: '/api/game/' + gameID,
+      success: updateView,
+      error: console.log,
+    });
+  }
+
 });
+
