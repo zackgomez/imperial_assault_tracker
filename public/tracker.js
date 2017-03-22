@@ -138,16 +138,9 @@ function addItem(event) {
 $(document).ready(function(){
   var url = window.location.href;
   var idLocation = url.indexOf('#');
-  if (idLocation == -1) {
-      $.ajax({
-        cache: false,
-        dataType: 'json',
-        url: '/api/data',
-        success: updateView
-      });
-  }
-  else {
-    var gameID = url.substring(idLocation + 1);
+  var gameID = url.substring(idLocation + 1);
+  console.log(gameID);
+  if (url.indexOf('#') !== -1 && gameID.length > 0) {
     $.ajax({
       cache: false,
       dataType: 'json',
@@ -156,6 +149,12 @@ $(document).ready(function(){
       error: console.log,
     });
   }
-
+  else  {
+    $.ajax({
+      cache: false,
+      dataType: 'json',
+      url: '/api/data',
+      success: updateView
+    });
+  }
 });
-

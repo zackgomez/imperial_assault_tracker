@@ -78,8 +78,7 @@
     <script>
       $('#addRebel').click(function(e) {
         e.preventDefault();
-        var newRebelPlayer = $('<p/>').attr({
-          });
+        var newRebelPlayer = $('<p/>');
         newRebelPlayer.append('Player Name: ');
         var name = $('<input/>').attr({
           type: 'text',
@@ -99,7 +98,6 @@
         deletePlayerButton.click(function(e){
           e.preventDefault();
           $(e.target).parent().remove();
-
         })
         newRebelPlayer.append(deletePlayerButton);
         $('#rebelSide').append(newRebelPlayer);
@@ -108,7 +106,7 @@
       $('#createGameButton').click(function(e) {
         e.preventDefault();
         var rebelList = $('#rebelSide').children('p').map(function(ind, val){
-          return {'name': $(val).children()[0].value, 'hero': $(val).children()[1].value};
+          return {name: $(val).children()[0].value, hero: $(val).children()[1].value};
         }).get();
 
         var newGame = {
