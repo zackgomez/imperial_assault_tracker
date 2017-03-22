@@ -138,23 +138,19 @@ function addItem(event) {
 $(document).ready(function(){
   var url = window.location.href;
   var idLocation = url.indexOf('#');
-  var gameID = url.substring(idLocation + 1);
-  console.log(gameID);
-  if (url.indexOf('#') !== -1 && gameID.length > 0) {
-    $.ajax({
-      cache: false,
-      dataType: 'json',
-      url: '/api/game/' + gameID,
-      success: updateView,
-      error: console.log,
-    });
+  var gameID = '';
+  if (url.indexOf('#') !== -1) {
+    gameID = url.substring(idLocation + 1);
   }
-  else  {
-    $.ajax({
-      cache: false,
-      dataType: 'json',
-      url: '/api/data',
-      success: updateView
-    });
-  }
+
+  var gameURL = '';
+  gameURL = (gameID.length > 0) ? `/api/game/${gameID}` : '/api/data';
+
+  $.ajax({
+    cache: false,
+    dataType: 'json',
+    url: gameURL,
+    success: updateView,
+    error: console.log,
+  });
 });
